@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+require "optparse"
+
+root = Pathname.new(__FILE__).realpath.parent.parent
+$:.unshift root.join("lib") if $0 == __FILE__
+
+require "lilac"
+
+def name
+  $0.gsub(/.*\//, "")
+end
+
+def help
+  <<-MESSAGE
+Useage:
+  #{name} [input|option]
+    -v, --version  Show version of gem.
+    -h, --helf     Show this message.
+  MESSAGE
+end
+
+opts = {
+  path: nil
+}
+
+input = nil
+
+filter = lambda do |v|
+  unless File.exists?(v)
+    puts "#{name}: cannot access #{v}: No such file"
+    exit 1
+  end
+  opts[key] = v
+end
+
+parser = OptionParser.new
+parser.on("-v", "--version") { puts Lilac::VERSION; exit }
+parser.on_tail("-h", "--help") { puts help; exit }
+
+begin
+  args = ARGV.dup
+  if args.length > 1
+    parser.parse!(args)
+  else
+    input = ARGF.each_line.to_a.join
+  end
+  unless input
+    raise OptionParser::MissingArgument
+  end
+rescue
+  puts help
+  exit 1
+end
+
+cli = Lilac::Cli.new(opts, input)
+cli.run
