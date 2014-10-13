@@ -111,4 +111,14 @@ class Lilac::ParserTest < Minitest::Unit::TestCase
     ]
     assert_equal expected, acc
   end
+
+  def test_handle_text_removes_line_break
+    parser = Lilac::Parser.new
+    assert_equal [:text, "foo"], parser.handle_text("foo\n")
+  end
+
+  def test_handle_text_removes_whitespaces_in_both_side
+    parser = Lilac::Parser.new
+    assert_equal [:text, "foo"], parser.handle_text(" foo \n")
+  end
 end
