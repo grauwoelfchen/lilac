@@ -6,6 +6,36 @@ class Lilac::ParserTest < Minitest::Unit::TestCase
     assert_instance_of Enumerator::Lazy, parser.parse
   end
 
+  def test_handle_bullet_replacel_hyphen_as_asterisk
+    parser = Lilac::Parser.new
+    assert_equal "* foo", parser.handle_bullet("- foo")
+  end
+
+  def test_handle_bullet_removes_asciidoc_hyphen_indent
+    parser = Lilac::Parser.new
+    assert_equal "* foo", parser.handle_bullet("--- foo")
+  end
+
+  def test_handle_bullet_does_not_replace_invalid_indent
+    parser = Lilac::Parser.new
+    assert_equal " * foo", parser.handle_bullet(" * foo")
+  end
+
+  def test_handle_bullet_keeps_no_indent_asterisk_bullet
+    parser = Lilac::Parser.new
+    assert_equal "* foo", parser.handle_bullet("* foo")
+  end
+
+  def test_handle_bullet_replaces_indent_by_2_spaces_as_2_asterisks
+    parser = Lilac::Parser.new
+    assert_equal "** foo", parser.handle_bullet("  * foo")
+  end
+
+  def test_handle_bullet_replaces_indent_by_4_spaces_as_3_asterisks
+    parser = Lilac::Parser.new
+    assert_equal "*** foo", parser.handle_bullet("    * foo")
+  end
+
   def test_handle_line_ignores_line_without_be_started_with_asterisk_bullet
     parser = Lilac::Parser.new
     acc = []
@@ -20,14 +50,11 @@ class Lilac::ParserTest < Minitest::Unit::TestCase
     assert_equal [], acc
   end
 
-  def test_handle_line_raises_error_for_invalid_too_many_indent
-    # TODO
-    # handle error
+  def test_handle_line_ignores_too_many_indented_line
     parser = Lilac::Parser.new
     acc = []
-    assert_raises NoMethodError do
-      parser.handle_line("** foo", acc)
-    end
+    parser.handle_line("** foo", acc)
+    assert_equal [], acc
   end
 
   def test_handle_line_extracts_valid_1_level_depth_line

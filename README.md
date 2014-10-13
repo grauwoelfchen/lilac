@@ -8,6 +8,7 @@ Currently, does not work yet :'(
 ## Supported syntax
 
 * Asciidoc
+* Markdown
 
 ## Installation
 
@@ -38,6 +39,45 @@ puts list.to_html #=> <ul><li>foo<li><li><ul><li>bar</li></ul>
 list = Lilac::List.new(text)
 puts list.to_html #=> <ul><li>foo<li><li><ul><li>bar</li><li>...</li></ul></li></ul>
 ```
+
+### Supported list styles
+
+#### Asciidoc
+
+```ruby
+- foo
+- bar
+- baz
+
+puts list.to_html #=> <ul><li>foo</li><li>bar</li><li>baz</li></ul>
+```
+
+```ruby
+- foo
+-- bar
+--- baz
+
+puts list.to_html #=> <ul><li>foo</li><li>bar</li><li>baz</li></ul>
+```
+
+```ruby
+* foo
+** bar
+*** baz
+
+puts list.to_html #=> <ul><li>foo</li><li><ul><li>bar</li><li><ul><li>baz</li></ul></li></ul></li></ul>
+```
+
+#### Markdown
+
+```ruby
+* foo
+  * bar
+    * baz
+
+puts list.to_html #=> <ul><li>foo</li><li><ul><li>bar</li><li><ul><li>baz</li></ul></li></ul></li></ul>
+```
+
 
 ## License
 

@@ -6,9 +6,27 @@ module Lilac
 
     def parse
       @list.inject([]) { |acc, line|
-        handle_line(line, acc)
+        line = handle_bullet(line)
+        begin
+          handle_line(line, acc)
+        rescue
+        end
         acc
       }.lazy
+    end
+
+    def handle_bullet(line)
+      # md to adoc, - to *
+      line.gsub(/^(\s*)([\*-]+)/) { |bullet|
+        level = $1.to_s.length
+        if level == 0 && $2 =~ /-+/
+          "*"
+        elsif level > 1
+          "*" * (level / 2 + 1)
+        else
+          bullet.gsub(/-/, "*")
+        end
+      }
     end
 
     def handle_line(line, acc)
@@ -17,7 +35,7 @@ module Lilac
         text  = line.gsub($1, "")
         if level == 1
           acc << [:li, handle_text(text)]
-        else
+        elsif !acc.empty?
           cur = ul = acc
           # progression
           #   **    -> 2
