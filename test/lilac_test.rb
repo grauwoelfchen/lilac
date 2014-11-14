@@ -1,6 +1,6 @@
 require "test_helper"
 
-class LilacTest < Minitest::Unit::TestCase
+class LilacTest < Minitest::Test
   def test_flat_list_creation
     text = <<-TEXT.gsub(/^\s*/, "")
     * foo
