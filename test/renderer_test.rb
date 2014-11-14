@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Lilac::RendererTest < Minitest::Unit::TestCase
+class Lilac::RendererTest < Minitest::Test
   def test_render_returns_html_string
     data = [[:li, [:text, "foo"]]]
     renderer = Lilac::Renderer.new(data)
