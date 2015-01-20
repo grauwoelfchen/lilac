@@ -1,6 +1,6 @@
 require "test_helper"
 
-class AsciidocTest < Minitest::Unit::TestCase
+class AsciidocTest < Minitest::Test
   def test_asterisk_bullet_flat_list
     text = <<-TEXT.gsub(/^\s{4}/, "")
     * foo

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Lilac::ListTest < Minitest::Unit::TestCase
+class Lilac::ListTest < Minitest::Test
   def test_should_returns_string
     list = Lilac::List.new("* foo\n")
     assert_instance_of String, list.to_html

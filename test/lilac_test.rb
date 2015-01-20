@@ -1,7 +1,7 @@
 require "stringio"
 require "test_helper"
 
-class LilacTest < Minitest::Unit::TestCase
+class LilacTest < Minitest::Test
   def test_output_from_cli_input
     text = <<-TEXT.gsub(/^\s{4}/, "")
     * foo

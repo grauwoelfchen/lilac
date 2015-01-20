@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Lilac::ParserTest < Minitest::Unit::TestCase
+class Lilac::ParserTest < Minitest::Test
   def test_should_returns_enumerator_lazy_object
     parser = Lilac::Parser.new("* foo")
     assert_instance_of Enumerator::Lazy, parser.parse
