@@ -1,13 +1,15 @@
+require "stringio"
 require "test_helper"
 
 class LilacTest < Minitest::Unit::TestCase
-  def test_flat_list_creation
-    text = <<-TEXT.gsub(/^\s*/, "")
+  def test_output_from_cli_input
+    text = <<-TEXT.gsub(/^\s{4}/, "")
     * foo
     * bar
     * baz
     TEXT
-    list = Lilac::List.new(text)
+    cli = Lilac::Cli.new({}, text)
+    result = capture_stdout { cli.run }
     expected = <<-LIST.gsub(/\n|\s/, "")
     <ul>
       <li>foo</li>
@@ -15,52 +17,15 @@ class LilacTest < Minitest::Unit::TestCase
       <li>baz</li>
     </ul>
     LIST
-    assert_equal expected, list.to_html
+    assert_equal expected, result
   end
 
-  def test_2_level_depth_list_creation
-    text = <<-TEXT.gsub(/^\s*/, "")
-    * foo
-    ** bar
-    ** baz
-    TEXT
-    list = Lilac::List.new(text)
-    rendered = <<-LIST.gsub(/\n|\s/, "")
-    <ul>
-      <li>foo</li>
-      <li>
-        <ul>
-          <li>bar</li>
-          <li>baz</li>
-        </ul>
-      </li>
-    </ul>
-    LIST
-    assert_equal rendered, list.to_html
-  end
-
-  def test_3_level_depth_list_creation
-    text = <<-TEXT.gsub(/^\s*/, "")
-    * foo
-    ** bar
-    *** baz
-    TEXT
-    list = Lilac::List.new(text)
-    rendered = <<-LIST.gsub(/\n|\s/, "")
-    <ul>
-      <li>foo</li>
-      <li>
-        <ul>
-          <li>bar</li>
-          <li>
-            <ul>
-              <li>baz</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    LIST
-    assert_equal rendered, list.to_html
+  def capture_stdout
+    origin = $stdout
+    $stdout = StringIO.new
+    yield
+    result = $stdout.string.strip
+    $stdout = origin
+    result
   end
 end

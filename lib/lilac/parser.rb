@@ -1,25 +1,28 @@
 module Lilac
   class Parser
-    def initialize(list = nil)
-      @list = list ? list.each_line.lazy : []
+    def initialize(text = nil)
+      @text = text ? text.each_line.lazy : []
     end
 
     def parse
-      @list.inject([]) { |acc, line|
+      @text.inject([]) { |acc, line|
         line = handle_bullet(line)
         begin
           handle_line(line, acc)
         rescue
+          # pass
         end
         acc
       }.lazy
     end
 
+    private
+
     def handle_bullet(line)
-      # md to adoc, - to *
-      line.gsub(/^(\s*)([\*-]+)/) { |bullet|
+      # md to adoc, -|+ to *
+      line.gsub(/^(\s*)([\*\-\+]+)/) { |bullet|
         level = $1.to_s.length
-        if level == 0 && $2 =~ /-+/
+        if level == 0 && $2 =~ /[\-\+]+/
           "*"
         elsif level > 1
           "*" * (level / 2 + 1)
