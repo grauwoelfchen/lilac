@@ -1,5 +1,7 @@
 # Lilac
 
+[![Build Status](https://secure.travis-ci.org/grauwoelfchen/lilac.png)](http://travis-ci.org/grauwoelfchen/lilac)
+
 Lilac (luxury indented list another converter) is list converter
 that supports list styles of several lightweight markup languages.
 
