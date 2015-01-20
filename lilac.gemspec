@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = Lilac::VERSION
   spec.authors       = ["Yasuhiro Asaka"]
   spec.email         = ["grauwoelfchen@gmail.com"]
-  spec.summary       = %q{LIst LAzy Converter}
-  spec.description   = %q{The interface for list text}
+  spec.summary       = %q{Luxury Indented List Another Converter}
+  spec.description   = %q{The Converter for various list text}
   spec.homepage      = ""
   spec.license       = "MIT"
 
