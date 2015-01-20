@@ -13,6 +13,11 @@ that supports list styles of several lightweight markup languages.
 ## Installation
 
 ```sh
+$ gem install lilac
+```
+
+
+```sh
 $ git clone https://github.com/grauwoelfchen/lilac.git
 ```
 
