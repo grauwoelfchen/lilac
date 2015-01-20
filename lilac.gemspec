@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["grauwoelfchen@gmail.com"]
   spec.summary       = %q{Luxury Indented List Another Converter}
   spec.description   = %q{The Converter for various list text}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/grauwoelfchen/lilac"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
