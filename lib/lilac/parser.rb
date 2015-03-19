@@ -32,28 +32,38 @@ module Lilac
       }
     end
 
+    # TODO
+    #   * remove magic number
+    #   * remove destructive method to reference
     def handle_line(line, acc)
       if line =~ /^(\*+)\s/
         level = $1.length
         text  = line.gsub($1, "")
         if level == 1
-          acc << [:li, handle_text(text)]
+          acc << [:li, [handle_text(text)]]
         elsif !acc.empty?
           cur = ul = acc
           # progression
-          #   **    -> 2
-          #   ***   -> 5
-          #   ****  -> 8
-          #   ***** -> 11
-          inspection = level * 3 - 4
+          #   **    ->  1
+          #   ***   ->  5
+          #   ****  ->  9
+          #   ***** -> 13
+          inspection = 1 + (4 * (level - 2))
           inspection.times { cur = cur.last if cur }
           case cur.first
           when :ul
-            cur.last << [:li, handle_text(text)]
+            cur.last << [:li, [handle_text(text)]]
           else
-            # current ul
-            (inspection - 2).times { ul = ul.last }
-            ul << [:li, [:ul, [[:li, handle_text(text)]]]]
+            sib = nil
+            begin; sib = cur.last.last.last.last; rescue NoMethodError; end
+            if sib && sib.first == :li
+              # apeend as siblings
+              cur = cur.last.last
+              cur[-1] += [[:li, [handle_text(text)]]]
+            else
+              # nest
+              cur[-1] += [[:ul, [[:li, [handle_text(text)]]]]]
+            end
           end
         end
       end

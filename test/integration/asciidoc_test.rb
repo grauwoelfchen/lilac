@@ -60,8 +60,7 @@ class AsciidocTest < Minitest::Test
     TEXT
     expected = <<-LIST.gsub(/\n|\s/, "")
     <ul>
-      <li>foo</li>
-      <li>
+      <li>foo
         <ul>
           <li>bar</li>
           <li>baz</li>
@@ -81,17 +80,44 @@ class AsciidocTest < Minitest::Test
     TEXT
     expected = <<-LIST.gsub(/\n|\s/, "")
     <ul>
-      <li>foo</li>
-      <li>
+      <li>foo
         <ul>
-          <li>bar</li>
-          <li>
+          <li>bar
             <ul>
               <li>baz</li>
             </ul>
           </li>
         </ul>
       </li>
+    </ul>
+    LIST
+    list = Lilac::List.new(text)
+    assert_equal expected, list.to_html
+  end
+
+  def test_asterisk_bullet_complicated_list
+    text = <<-TEXT.gsub(/^\s{4}/, "")
+    * foo
+    ** bar
+    *** baz
+    ** qux
+    ** quux
+    * bye
+    TEXT
+    expected = <<-LIST.gsub(/\n|\s/, "")
+    <ul>
+      <li>foo
+        <ul>
+          <li>bar
+            <ul>
+              <li>baz</li>
+            </ul>
+          </li>
+          <li>qux</li>
+          <li>quux</li>
+        </ul>
+      </li>
+      <li>bye</li>
     </ul>
     LIST
     list = Lilac::List.new(text)

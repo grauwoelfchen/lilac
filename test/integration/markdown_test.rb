@@ -61,8 +61,7 @@ class MarkdownTest < Minitest::Test
     TEXT
     expected = <<-LIST.gsub(/\n|\s/, "")
     <ul>
-      <li>foo</li>
-      <li>
+      <li>foo
         <ul>
           <li>bar</li>
           <li>baz</li>
@@ -82,11 +81,9 @@ class MarkdownTest < Minitest::Test
     TEXT
     expected = <<-LIST.gsub(/\n|\s/, "")
     <ul>
-      <li>foo</li>
-      <li>
+      <li>foo
         <ul>
-          <li>bar</li>
-          <li>
+          <li>bar
             <ul>
               <li>baz</li>
             </ul>
