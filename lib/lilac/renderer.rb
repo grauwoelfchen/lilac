@@ -5,37 +5,25 @@ module Lilac
     end
 
     def render
-      @data.inject("") { |acc, (t, b)|
-        acc << build(t, b, 1)
-        acc
-      }.instance_eval { |rendered_list|
-        "<ul>#{rendered_list}</ul>"
-      }
+      build(:ul, @data)
     end
 
     private
 
-    def build(tag, block, lv=1)
+    def build(tag, block)
+      wrap(tag, block.inject("") { |acc, elems|
+        acc << elems.each_cons(2).map { |t, b|
+          t == :text ? b : build(t, b)
+        }.join
+        acc
+      })
+    end
+
+    def wrap(tag, content)
       case tag
-      when :ul
-        block.map { |t, b|
-          build(t, b, lv)
-        }.join.instance_eval { |li|
-          "<ul>#{li}</ul>"
-        }
-      when :li
-        case block.first
-        when :text
-          build(:text, "<li>" + block.last.to_s + "</li>")
-        when :ul
-          block.last.map { |t, b|
-            build(t, b, lv + 1)
-          }.join.instance_eval { |li|
-            "<li><ul>#{li}</ul></li>"
-          }
-        end
-      else # text
-        block
+      when :ul ; "<ul>#{content}</ul>"
+      when :li ; "<li>#{content}</li>"
+      else # pass
       end
     end
   end

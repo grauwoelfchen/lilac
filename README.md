@@ -38,7 +38,14 @@ text = <<TEXT
 TEXT
 
 list = Lilac::List.new(text)
-puts list.to_html #=> <ul><li>foo<li><li><ul><li>...</li></ul></li></ul>
+puts list.to_html #=>
+<ul>
+  <li>foo
+    <ul>
+      <li>...</li>
+    </ul>
+  </li>
+</ul>
 ```
 
 ### Command line
@@ -49,7 +56,13 @@ $ lilac
 ** bar
 *** baz
 ;; press ^D
-<ul><li>foo</li><li><ul><li>bar</li><li><ul><li>baz</li></ul></li></ul></li></ul>
+<ul>
+  <li>foo
+    <ul>
+      <li>...</li>
+    </ul>
+  </li>
+</ul>
 ```
 
 ### Supported list styles
@@ -76,11 +89,9 @@ $ lilac
 
 ;; p list.to_html
 <ul>
-  <li>foo</li>
-  <li>
+  <li>foo
     <ul>
-      <li>bar</li>
-      <li>
+      <li>bar
         <ul>
           <li>baz</li>
         </ul>
@@ -99,11 +110,9 @@ $ lilac
 
 ;; p list.to_html
 <ul>
-  <li>foo</li>
-  <li>
+  <li>foo
     <ul>
-      <li>bar</li>
-      <li>
+      <li>bar
         <ul>
           <li>baz</li>
         </ul>
@@ -112,6 +121,10 @@ $ lilac
   </li>
 </ul>
 ```
+
+## Rendered List
+
+see [HTML lists - W3C Wiki](http://www.w3.org/wiki/HTML_lists#Nesting_lists)
 
 
 ## License

@@ -62,31 +62,49 @@ class Lilac::ParserTest < Minitest::Test
     acc = []
     parser.send(:handle_line, "* foo", acc)
     expected = [
-      [:li, [:text, "foo"]]
+      [:li, [
+        [:text, "foo"]
+      ]]
     ]
     assert_equal expected, acc
   end
 
   def test_should_extract_valid_1_level_depth_multiple_lines
     parser = Lilac::Parser.new
-    acc = [[:li, [:text, "foo"]]]
+    acc = [
+      [:li, [
+        [:text, "foo"]
+      ]]
+    ]
     parser.send(:handle_line, "* bar", acc)
     expected = [
-      [:li, [:text, "foo"]],
-      [:li, [:text, "bar"]]
+      [:li, [
+        [:text, "foo"]
+      ]],
+      [:li, [
+        [:text, "bar"]
+      ]]
     ]
     assert_equal expected, acc
   end
 
   def test_should_extract_valid_2_level_depth_lines
     parser = Lilac::Parser.new
-    acc = [[:li, [:text, "foo"]]]
+    acc = [
+      [:li, [
+        [:text, "foo"]
+      ]]
+    ]
     parser.send(:handle_line, "** bar", acc)
     expected = [
-      [:li, [:text, "foo"]],
-      [:li, [:ul, [
-        [:li, [:text, "bar"]]
-      ]]]
+      [:li, [
+        [:text, "foo"],
+        [:ul, [
+          [:li, [
+            [:text, "bar"]
+          ]]
+        ]]
+      ]]
     ]
     assert_equal expected, acc
   end
@@ -94,23 +112,75 @@ class Lilac::ParserTest < Minitest::Test
   def test_should_extract_valid_3_level_depth_lines
     parser = Lilac::Parser.new
     acc = [
-      [:li, [:text, "foo"]],
-      [:li, [:ul, [
-        [:li, [:text, "bar"]]]]
-      ]
+      [:li, [
+        [:text, "foo"],
+        [:ul, [
+          [:li, [
+            [:text, "bar"]
+          ]]
+        ]]
+      ]]
     ]
     parser.send(:handle_line, "*** baz", acc)
     expected = [
-      [:li, [:text, "foo"]],
-      [:li, [:ul, [
-        [:li, [:text, "bar"]],
-        [:li, [:ul, [
-          [:li, [:text, "baz"]]
-        ]]]
-      ]]]
+      [:li, [
+        [:text, "foo"],
+        [:ul, [
+          [:li, [
+            [:text, "bar"],
+            [:ul, [
+              [:li, [
+                [:text, "baz"]
+              ]]
+            ]]
+          ]]
+        ]]
+      ]]
     ]
     assert_equal expected, acc
   end
+
+  def test_should_extract_valid_4_level_depth_lines
+    parser = Lilac::Parser.new
+    acc = [
+      [:li, [
+        [:text, "foo"],
+        [:ul, [
+          [:li, [
+            [:text, "bar"],
+            [:ul, [
+              [:li, [
+                [:text, "baz"]
+              ]]
+            ]]
+          ]]
+        ]]
+      ]]
+    ]
+    parser.send(:handle_line, "**** qux", acc)
+    expected = [
+      [:li, [
+        [:text, "foo"],
+        [:ul, [
+          [:li, [
+            [:text, "bar"],
+            [:ul, [
+              [:li, [
+                [:text, "baz"],
+                [:ul, [
+                  [:li, [
+                    [:text, "qux"]
+                  ]]
+                ]]
+              ]]
+            ]]
+          ]]
+        ]]
+      ]]
+    ]
+    assert_equal expected, acc
+  end
+
 
   def test_should_remove_line_break
     parser = Lilac::Parser.new
